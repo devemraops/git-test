@@ -22,3 +22,7 @@ variable "min_size" {}
 variable "ami_type" {}
 variable "disk_size" {}
 variable "instance_type" {}
+variable "eks_role_name" {}
+variable "service" {}
+variable "eks_worker_role_name" {}
+variable "node_group_name" {}
