@@ -1,0 +1,49 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elastic-cluster
+spec:
+  version: 8.3.2
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  nodeSets:
+  - config:
+      node.roles: ["master", "data", "ingest"]
+      node.store.allow_mmap: false
+      xpack.ml.enabled: true
+    count: 1
+    name: master
+    podTemplate:
+      spec:
+        containers:
+        - env:
+          - name: ES_JAVA_OPTS
+            value: -Xms2g -Xmx2g
+          name: elasticsearch
+          resources:
+            limits:
+              cpu: "1"
+              memory: 3Gi
+            requests:
+              cpu: 500m
+              memory: 2Gi
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - sysctl -w vm.max_map_count=262144
+          name: sysctl
+          resources: {}
+          securityContext:
+            privileged: true
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
