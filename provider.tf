@@ -44,12 +44,12 @@ provider "kubernetes" {
 }
 
 
-data "terraform_remote_state" "eks" {
-  backend = "s3"
-  config = {
-    bucket  = "work-cluster-s3"
-      key     = "ops/cluster/terraform.tfstate"
-      region = "us-east-2"
-      profile = "silver"
-  }
-} 
+# data "terraform_remote_state" "eks" {
+#   backend = "s3"
+#   config = {
+#     bucket  = "work-cluster-s3"
+#       key     = "ops/cluster/terraform.tfstate"
+#       region = "us-east-2"
+#       profile = "silver"
+#   }
+# } 
